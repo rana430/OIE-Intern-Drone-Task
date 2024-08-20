@@ -3,6 +3,7 @@ package entities;
 import enums.Model;
 import enums.State;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Drone {
@@ -12,15 +13,17 @@ public class Drone {
     private float WeightLimit;
     private int BatteryCapacity;
     private State state;
+    private float curWeight;
 
     public Drone(){}
-    public Drone(char[] serialNumber, Model model, Queue<Medication> medications, float weightLimit, int batteryCapacity, State state) {
+    public Drone(char[] serialNumber, Model model, float weightLimit) {
         this.serialNumber = serialNumber;
         this.model = model;
-        this.medications = medications;
+        medications = new LinkedList<>();
         WeightLimit = weightLimit;
-        BatteryCapacity = batteryCapacity;
-        this.state = state;
+        BatteryCapacity = 0;
+        this.state = State.IDLE;
+        curWeight = 0.0f;
     }
 
     public char[] getSerialNumber() {
@@ -69,5 +72,29 @@ public class Drone {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public void addMedication (Medication medication) {
+        medications.add(medication);
+    }
+
+    public void removeMedication (Medication medication) {
+        medications.remove(medication);
+    }
+
+    public void rechargeBattery () {
+        BatteryCapacity = 100;
+    }
+
+    public void deliver () {
+        setState(State.DELIVERING);
+    }
+
+    public float getCurWeight() {
+        return curWeight;
+    }
+
+    public void setCurWeight(float medicationWeight) {
+        curWeight += medicationWeight;
     }
 }
