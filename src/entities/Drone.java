@@ -1,58 +1,45 @@
 package entities;
 
-import enums.Model;
-import enums.State;
-
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Drone {
-    private char[] serialNumber = new char[100];
-    private Model model;
+    private String serialNumber = "";
+    private Drone.Model model;
     private Queue<Medication> medications;
     private float WeightLimit;
     private int BatteryCapacity;
     private State state;
+    private float curWeight;
 
-    public Drone(){}
-    public Drone(char[] serialNumber, Model model, Queue<Medication> medications, float weightLimit, int batteryCapacity, State state) {
+    public Drone(String serialNumber, Drone.Model model, float weightLimit) {
         this.serialNumber = serialNumber;
         this.model = model;
-        this.medications = medications;
+        medications = new LinkedList<>(); //TODO
         WeightLimit = weightLimit;
-        BatteryCapacity = batteryCapacity;
-        this.state = state;
+        BatteryCapacity = 100;
+        this.state = State.IDLE;
+        curWeight = 0.0f;
     }
 
-    public char[] getSerialNumber() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(char[] serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public Model getModel() {
+    public Drone.Model getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(Drone.Model model) {
         this.model = model;
     }
 
     public Queue<Medication> getMedications() {
         return medications;
     }
-
-    public void setMedications(Queue<Medication> medications) {
-        this.medications = medications;
-    }
-
+    
     public float getWeightLimit() {
         return WeightLimit;
-    }
-
-    public void setWeightLimit(float weightLimit) {
-        WeightLimit = weightLimit;
     }
 
     public int getBatteryCapacity() {
@@ -63,11 +50,51 @@ public class Drone {
         BatteryCapacity = batteryCapacity;
     }
 
-    public State getState() {
+    public Drone.State getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(Drone.State state) {
         this.state = state;
     }
+
+    public void addMedication (Medication medication) {
+        medications.add(medication);
+    }
+    
+    public float getCurWeight() {
+        return curWeight;
+    }
+
+    public void setCurWeight(float medicationWeight) {
+        curWeight += medicationWeight;
+    }
+
+    public enum State {
+        IDLE , LOADED , DELIVERING , DELIVERED , RETURNED
+    }
+
+    public enum Model {
+        LIGHTWEIGHT(100, 50),
+        MIDDLEWEIGHT(200, 100),
+        CRUISERWEIGHT(300, 150),
+        HEAVYWEIGHT(500, 250);
+
+        private final float maxWeightLimit;
+        private final float minWeightLimit;
+
+        Model(float maxWeightLimit, float minWeightLimit) {
+            this.maxWeightLimit = maxWeightLimit;
+            this.minWeightLimit = minWeightLimit;
+        }
+
+        public float getMaxWeightLimit() {
+            return maxWeightLimit;
+        }
+
+        public float getMinWeightLimit() {
+            return minWeightLimit;
+        }
+    }
+
 }
