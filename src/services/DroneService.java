@@ -1,6 +1,7 @@
 package services;
 
 import java.util.HashMap;
+import java.util.Queue;
 
 import entities.Drone;
 import entities.Medication;
@@ -152,6 +153,8 @@ public class DroneService {
     public void getDroneList(){
         for (Drone drone : drones.values()) {
             System.out.println("Serial Number: " + drone.getSerialNumber() + " Drone State: "+drone.getState() + " Drone Battery Level: " + drone.getBatteryCapacity());
+            System.out.println("Drone Medications: ");
+            getDroneMedication(drone.getSerialNumber());
         }
     }
 
@@ -162,5 +165,13 @@ public class DroneService {
 
     public HashMap<String, Drone> getDrones() {
         return drones;
+    }
+
+    private void getDroneMedication(String serialNumber) {
+        Drone drone = drones.get(serialNumber);
+        Queue<Medication>medications = drone.getMedications();
+        for (Medication medication : medications) {
+            System.out.println("Medication Name: " + medication.getName());
+        }
     }
 }
