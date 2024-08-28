@@ -1,44 +1,44 @@
+import commands.*;
 import controller.DroneController;
-import services.DroneService;
+import entities.Command;
 
-import java.sql.SQLOutput;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Engine {
+    private Map<String, Command> commandMap;
+
+    public Engine() {
+        commandMap = new HashMap<>();
+        DroneController droneController = DroneController.getInstance();
+
+        commandMap.put("load", new ListDronesCommand(droneController));
+        commandMap.put("register", new RegisterCommand(droneController));
+        commandMap.put("recharge", new RechargeCommand(droneController));
+        commandMap.put("check_status", new CheckStatusCommand(droneController));
+        commandMap.put("deliver", new DeliverDroneCommand(droneController));
+        commandMap.put("list_drones", new ListDronesCommand(droneController));
+    }
+
     public void run() {
         Scanner scan = new Scanner(System.in);
         while (true) {
             System.out.println("Enter Command");
             String input = scan.nextLine();
             String[] parts = input.split(" ");
-            switch (parts[0].toLowerCase()) {
-                case "load":
-                    DroneController.getInstance().loadDrone(input);
-                    break;
-                case "register":
-                    DroneController.getInstance().registerDrone(input);
-                    break;
-                case "recharge":
-                    DroneController.getInstance().rechargeDrone(input);
-                    break;
-                case "check_status":
-                    DroneController.getInstance().checkDroneState(input);
-                    break;
-                case "deliver":
-                    DroneController.getInstance().deliverDrone(input);
-                    break;
-                case "list_drones":
-                    DroneController.getInstance().listDrones();
-                    break;
-                case "help":
-                    getCommands();
-                    break;
-                default:
-                    System.out.println("Invalid Command");
-                    break;
+            String commandName = parts[0].toLowerCase();
+
+            Command command = commandMap.get(commandName);
+            if (command != null) {
+                command.execute(input);
+            } else if ("help".equals(commandName)) {
+                getCommands();
+            } else {
+                System.out.println("Invalid Command");
             }
         }
-    };
+    }
 
     private void getCommands() {
         System.out.println("list_drones  Displays a list of all registered drones along with their current states and battery levels.");
