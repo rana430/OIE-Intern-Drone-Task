@@ -31,6 +31,7 @@ public class Engine {
 
             Command command = commandMap.get(commandName);
             if (command != null) {
+                System.out.println(commandName);
                 command.execute(input);
             } else if ("help".equals(commandName)) {
                 getCommands();

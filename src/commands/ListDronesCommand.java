@@ -10,6 +10,6 @@ public class ListDronesCommand implements Command {
     }
     @Override
     public void execute(String input) {
-        drone.loadDrone(input);
+        drone.listDrones();
     }
 }

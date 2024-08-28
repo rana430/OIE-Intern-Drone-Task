@@ -151,6 +151,10 @@ public class DroneService {
     }
 
     public void getDroneList(){
+        if (drones.isEmpty()) {
+            System.out.println("No Registered Drones Yet");
+            return;
+        }
         for (Drone drone : drones.values()) {
             System.out.println("Serial Number: " + drone.getSerialNumber() + " Drone State: "+drone.getState() + " Drone Battery Level: " + drone.getBatteryCapacity());
             System.out.println("Drone Medications: ");
@@ -163,13 +167,13 @@ public class DroneService {
         return drone.getState();
     }
 
-    public Map<String, Drone> getDrones() {
-        return drones;
-    }
-
     private void getDroneMedication(String serialNumber) {
         Drone drone = drones.get(serialNumber);
         Queue<Medication>medications = drone.getMedications();
+        if (medications.isEmpty()) {
+            System.out.println("This drone has no Medication");
+            return;
+        }
         for (Medication medication : medications) {
             System.out.println("Medication Name: " + medication.getName());
         }
