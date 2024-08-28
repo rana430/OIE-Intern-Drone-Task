@@ -37,10 +37,6 @@ public class Engine {
                     System.out.println("Invalid Command");
                     break;
             }
-            System.out.println("Continue? Enter Y/N");
-            if (!scan.nextLine().equalsIgnoreCase("Y")) {
-                break;
-            }
         }
     };
 

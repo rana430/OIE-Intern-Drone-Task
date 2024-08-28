@@ -7,19 +7,17 @@ public class Drone {
     private String serialNumber = "";
     private Drone.Model model;
     private Queue<Medication> medications;
-    private float WeightLimit;
-    private int BatteryCapacity;
+    private float weightLimit;
+    private int batteryCapacity;
     private State state;
-    private float curWeight;
 
     public Drone(String serialNumber, Drone.Model model, float weightLimit) {
         this.serialNumber = serialNumber;
         this.model = model;
         medications = new LinkedList<>(); //TODO
-        WeightLimit = weightLimit;
-        BatteryCapacity = 100;
+        this.weightLimit = weightLimit;
+        batteryCapacity = 100;
         this.state = State.IDLE;
-        curWeight = 0.0f;
     }
 
     public String getSerialNumber() {
@@ -30,24 +28,20 @@ public class Drone {
         return model;
     }
 
-    public void setModel(Drone.Model model) {
-        this.model = model;
-    }
-
     public Queue<Medication> getMedications() {
         return medications;
     }
     
     public float getWeightLimit() {
-        return WeightLimit;
+        return weightLimit;
     }
 
     public int getBatteryCapacity() {
-        return BatteryCapacity;
+        return batteryCapacity;
     }
 
     public void setBatteryCapacity(int batteryCapacity) {
-        BatteryCapacity = batteryCapacity;
+        batteryCapacity = batteryCapacity;
     }
 
     public Drone.State getState() {
@@ -63,11 +57,11 @@ public class Drone {
     }
     
     public float getCurWeight() {
-        return curWeight;
-    }
-
-    public void setCurWeight(float medicationWeight) {
-        curWeight += medicationWeight;
+        float weight = 0;
+        for (Medication medication : medications) {
+            weight += medication.getWeight();
+        }
+        return weight;
     }
 
     public enum State {

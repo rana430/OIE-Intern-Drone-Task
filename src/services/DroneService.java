@@ -1,6 +1,7 @@
 package services;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 import entities.Drone;
@@ -83,7 +84,6 @@ public class DroneService {
 
     private void loadMedication(Drone drone, Medication medication) {
         drone.addMedication(medication);
-        drone.setCurWeight(drone.getCurWeight() + medication.getWeight());
 
         if (drone.getState() == Drone.State.IDLE) {
             drone.setState(Drone.State.LOADED);
@@ -163,7 +163,7 @@ public class DroneService {
         return drone.getState();
     }
 
-    public HashMap<String, Drone> getDrones() {
+    public Map<String, Drone> getDrones() {
         return drones;
     }
 
