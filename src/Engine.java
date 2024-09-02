@@ -1,6 +1,7 @@
 import commands.*;
-import controller.DroneController;
 import entities.Command;
+import entities.Drone;
+import utils.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,17 +9,18 @@ import java.util.Scanner;
 
 public class Engine {
     private Map<String, Command> commandMap;
-
+    private HashMap<String, Drone> drones;
     public Engine() {
         commandMap = new HashMap<>();
-        DroneController droneController = DroneController.getInstance();
+        drones = new HashMap<>();
+        Validator validator = Validator.getInstance();
 
-        commandMap.put("load", new ListDronesCommand(droneController));
-        commandMap.put("register", new RegisterCommand(droneController));
-        commandMap.put("recharge", new RechargeCommand(droneController));
-        commandMap.put("check_status", new CheckStatusCommand(droneController));
-        commandMap.put("deliver", new DeliverDroneCommand(droneController));
-        commandMap.put("list_drones", new ListDronesCommand(droneController));
+        commandMap.put("load", new LoadCommand(validator));
+        commandMap.put("register", new RegisterCommand(validator));
+        commandMap.put("recharge", new RechargeCommand(validator));
+        commandMap.put("check_status", new CheckStatusCommand(validator));
+        commandMap.put("deliver", new DeliverDroneCommand(validator));
+        commandMap.put("list_drones", new ListDronesCommand());
     }
 
     public void run() {
@@ -32,7 +34,7 @@ public class Engine {
             Command command = commandMap.get(commandName);
             if (command != null) {
                 System.out.println(commandName);
-                command.execute(input);
+                command.execute(input, drones);
             } else if ("help".equals(commandName)) {
                 getCommands();
             } else {
